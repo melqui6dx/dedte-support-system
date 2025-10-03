@@ -7,7 +7,8 @@ const SistemaSoporteDEDTE = ({
   onCrearSolicitud,
   onCrearCategoria,
   onActualizarCategoria,
-  onEliminarCategoria
+  onEliminarCategoria,
+  onActualizarSolicitud
 }) => {
   const [vista, setVista] = useState('solicitudes');
   const [modalDetalle, setModalDetalle] = useState(null);
@@ -16,6 +17,8 @@ const SistemaSoporteDEDTE = ({
   const [categoriaEditar, setCategoriaEditar] = useState(null);
   const [filtros, setFiltros] = useState({ busqueda: '', estado: '', facultad: '', prioridad: '' });
   const [errorMessage, setErrorMessage] = useState(null);
+  const [modalCambiarEstado, setModalCambiarEstado] = useState(null);
+  const [modalAsignar, setModalAsignar] = useState(null);
 
   // Componente: Modal de Detalle de Solicitud
   const ModalDetalleSolicitud = ({ solicitud, onClose }) => {
@@ -190,13 +193,26 @@ const SistemaSoporteDEDTE = ({
 
             {/* Acciones */}
             <div className="flex gap-3 pt-4 border-t">
-              <button className="flex-1 bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 font-medium">
+              <button
+                onClick={() => setModalCambiarEstado(solicitud)}
+                className="flex-1 bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 font-medium"
+              >
                 Cambiar Estado
               </button>
-              <button className="flex-1 bg-gray-100 text-gray-700 py-2 px-4 rounded-lg hover:bg-gray-200 font-medium">
+              <button
+                onClick={() => setModalAsignar(solicitud)}
+                className="flex-1 bg-gray-100 text-gray-700 py-2 px-4 rounded-lg hover:bg-gray-200 font-medium"
+              >
                 Asignar
               </button>
-              <button className="bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700 font-medium flex items-center gap-2">
+              <button
+                onClick={() => {
+                  const mensaje = `Hola ${solicitud.nombre_estudiante}, te contactamos desde DEDTE sobre tu ticket ${solicitud.numero_ticket}: ${solicitud.titulo}`;
+                  const telefono = solicitud.telefono.replace(/\D/g, '');
+                  window.open(`https://wa.me/${telefono}?text=${encodeURIComponent(mensaje)}`, '_blank');
+                }}
+                className="bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700 font-medium flex items-center gap-2"
+              >
                 <ExternalLink size={18} />
                 WhatsApp
               </button>
@@ -265,9 +281,23 @@ const SistemaSoporteDEDTE = ({
               className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
             >
               <option value="">Todas las facultades</option>
-              <option value="Ingeniería y Arquitectura">Ingeniería y Arquitectura</option>
-              <option value="Ciencias de la Salud">Ciencias de la Salud</option>
-              <option value="Ciencias Económicas y Sociales">Ciencias Económicas y Sociales</option>
+              <option value="Cs. Jurídicas, Políticas y Sociales">Cs. Jurídicas, Políticas y Sociales</option>
+              <option value="Cs. Económicas, Administrativas y Financieras">Cs. Económicas, Administrativas y Financieras</option>
+              <option value="Ciencias Agrícolas">Ciencias Agrícolas</option>
+              <option value="Cs. Exactas y Tecnología">Cs. Exactas y Tecnología</option>
+              <option value="Ciencias Veterinarias">Ciencias Veterinarias</option>
+              <option value="Auditoría Financiera o Contaduría Pública">Auditoría Financiera o Contaduría Pública</option>
+              <option value="Politécnica">Politécnica</option>
+              <option value="Humanidades">Humanidades</option>
+              <option value="Ingeniería en Cs. de la Computación y Telecomunicaciones">Ingeniería en Cs. de la Computación y Telecomunicaciones</option>
+              <option value="Integral del Norte">Integral del Norte</option>
+              <option value="Integral de los Valles Cruceños">Integral de los Valles Cruceños</option>
+              <option value="Cs. del Hábitat, Diseño y Arte">Cs. del Hábitat, Diseño y Arte</option>
+              <option value="Cs. de la Salud Humana">Cs. de la Salud Humana</option>
+              <option value="Integral del Chaco">Integral del Chaco</option>
+              <option value="Integral de Ichilo">Integral de Ichilo</option>
+              <option value="Integral Chiquitana">Integral Chiquitana</option>
+              <option value="Ciencias Farmacéuticas y Bioquímicas">Ciencias Farmacéuticas y Bioquímicas</option>
             </select>
             <button
               onClick={() => setModalNuevo(true)}
@@ -674,11 +704,23 @@ const SistemaSoporteDEDTE = ({
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 >
                   <option value="">Seleccionar...</option>
-                  <option value="Ingeniería y Arquitectura">Ingeniería y Arquitectura</option>
-                  <option value="Ciencias de la Salud">Ciencias de la Salud</option>
-                  <option value="Ciencias Económicas y Sociales">Ciencias Económicas y Sociales</option>
+                  <option value="Cs. Jurídicas, Políticas y Sociales">Cs. Jurídicas, Políticas y Sociales</option>
+                  <option value="Cs. Económicas, Administrativas y Financieras">Cs. Económicas, Administrativas y Financieras</option>
+                  <option value="Ciencias Agrícolas">Ciencias Agrícolas</option>
+                  <option value="Cs. Exactas y Tecnología">Cs. Exactas y Tecnología</option>
+                  <option value="Ciencias Veterinarias">Ciencias Veterinarias</option>
+                  <option value="Auditoría Financiera o Contaduría Pública">Auditoría Financiera o Contaduría Pública</option>
+                  <option value="Politécnica">Politécnica</option>
                   <option value="Humanidades">Humanidades</option>
-                  <option value="Ciencias Jurídicas">Ciencias Jurídicas</option>
+                  <option value="Ingeniería en Cs. de la Computación y Telecomunicaciones">Ingeniería en Cs. de la Computación y Telecomunicaciones</option>
+                  <option value="Integral del Norte">Integral del Norte</option>
+                  <option value="Integral de los Valles Cruceños">Integral de los Valles Cruceños</option>
+                  <option value="Cs. del Hábitat, Diseño y Arte">Cs. del Hábitat, Diseño y Arte</option>
+                  <option value="Cs. de la Salud Humana">Cs. de la Salud Humana</option>
+                  <option value="Integral del Chaco">Integral del Chaco</option>
+                  <option value="Integral de Ichilo">Integral de Ichilo</option>
+                  <option value="Integral Chiquitana">Integral Chiquitana</option>
+                  <option value="Ciencias Farmacéuticas y Bioquímicas">Ciencias Farmacéuticas y Bioquímicas</option>
                 </select>
               </div>
 
@@ -781,6 +823,191 @@ const SistemaSoporteDEDTE = ({
                 disabled={enviando}
               >
                 {enviando ? 'Creando...' : 'Crear Solicitud'}
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    );
+  };
+
+  // Modal para Cambiar Estado
+  const ModalCambiarEstado = ({ solicitud, onClose }) => {
+    const [nuevoEstado, setNuevoEstado] = useState(solicitud.estado);
+    const [comentario, setComentario] = useState('');
+    const [enviando, setEnviando] = useState(false);
+
+    const handleSubmit = async (e) => {
+      e.preventDefault();
+      try {
+        setEnviando(true);
+        await onActualizarSolicitud(solicitud.id, { estado: nuevoEstado });
+        onClose();
+        setModalDetalle(null);
+      } catch (err) {
+        alert(err.message || 'Error al cambiar el estado');
+      } finally {
+        setEnviando(false);
+      }
+    };
+
+    return (
+      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+        <div className="bg-white rounded-lg max-w-md w-full">
+          <div className="border-b px-6 py-4 flex justify-between items-center">
+            <h2 className="text-xl font-bold text-gray-800">Cambiar Estado</h2>
+            <button onClick={onClose} className="text-gray-400 hover:text-gray-600">
+              <X size={24} />
+            </button>
+          </div>
+
+          <form onSubmit={handleSubmit} className="p-6 space-y-4">
+            <div>
+              <p className="text-sm text-gray-600 mb-2">
+                Ticket: <span className="font-semibold">{solicitud.numero_ticket}</span>
+              </p>
+              <p className="text-sm text-gray-600">
+                Estado actual: <span className="font-semibold capitalize">{solicitud.estado.replace('_', ' ')}</span>
+              </p>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Nuevo Estado *</label>
+              <select
+                value={nuevoEstado}
+                onChange={(e) => setNuevoEstado(e.target.value)}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                required
+              >
+                <option value="pendiente">Pendiente</option>
+                <option value="en_revision">En Revisión</option>
+                <option value="en_proceso">En Proceso</option>
+                <option value="resuelto">Resuelto</option>
+                <option value="cerrado">Cerrado</option>
+              </select>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Comentario (opcional)</label>
+              <textarea
+                value={comentario}
+                onChange={(e) => setComentario(e.target.value)}
+                rows={3}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                placeholder="Agrega un comentario sobre este cambio..."
+              />
+            </div>
+
+            <div className="flex gap-3 pt-4">
+              <button
+                type="button"
+                onClick={onClose}
+                className="flex-1 bg-gray-100 text-gray-700 py-2 px-4 rounded-lg hover:bg-gray-200"
+                disabled={enviando}
+              >
+                Cancelar
+              </button>
+              <button
+                type="submit"
+                className="flex-1 bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 disabled:bg-blue-300 disabled:cursor-not-allowed"
+                disabled={enviando}
+              >
+                {enviando ? 'Actualizando...' : 'Cambiar Estado'}
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    );
+  };
+
+  // Modal para Asignar Solicitud
+  const ModalAsignar = ({ solicitud, onClose }) => {
+    const [asignadoA, setAsignadoA] = useState(solicitud.asignado_a || '');
+    const [enviando, setEnviando] = useState(false);
+
+    // Lista de técnicos/agentes disponibles (esto debería venir de la BD en producción)
+    const agentesDisponibles = [
+      'Juan Pérez',
+      'María González',
+      'Carlos Rodríguez',
+      'Ana Martínez',
+      'Luis Fernández'
+    ];
+
+    const handleSubmit = async (e) => {
+      e.preventDefault();
+      try {
+        setEnviando(true);
+        await onActualizarSolicitud(solicitud.id, { asignado_a: asignadoA });
+        onClose();
+        setModalDetalle(null);
+      } catch (err) {
+        alert(err.message || 'Error al asignar la solicitud');
+      } finally {
+        setEnviando(false);
+      }
+    };
+
+    return (
+      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+        <div className="bg-white rounded-lg max-w-md w-full">
+          <div className="border-b px-6 py-4 flex justify-between items-center">
+            <h2 className="text-xl font-bold text-gray-800">Asignar Solicitud</h2>
+            <button onClick={onClose} className="text-gray-400 hover:text-gray-600">
+              <X size={24} />
+            </button>
+          </div>
+
+          <form onSubmit={handleSubmit} className="p-6 space-y-4">
+            <div>
+              <p className="text-sm text-gray-600 mb-2">
+                Ticket: <span className="font-semibold">{solicitud.numero_ticket}</span>
+              </p>
+              <p className="text-sm text-gray-600 mb-2">
+                Estudiante: <span className="font-semibold">{solicitud.nombre_estudiante}</span>
+              </p>
+              <p className="text-sm text-gray-600">
+                Asignado actual: <span className="font-semibold">{solicitud.asignado_a || 'No asignado'}</span>
+              </p>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Asignar a *</label>
+              <select
+                value={asignadoA}
+                onChange={(e) => setAsignadoA(e.target.value)}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                required
+              >
+                <option value="">Seleccionar agente...</option>
+                {agentesDisponibles.map((agente) => (
+                  <option key={agente} value={agente}>{agente}</option>
+                ))}
+              </select>
+            </div>
+
+            <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
+              <p className="text-xs text-blue-800">
+                <strong>Nota:</strong> El agente seleccionado será notificado de esta asignación.
+              </p>
+            </div>
+
+            <div className="flex gap-3 pt-4">
+              <button
+                type="button"
+                onClick={onClose}
+                className="flex-1 bg-gray-100 text-gray-700 py-2 px-4 rounded-lg hover:bg-gray-200"
+                disabled={enviando}
+              >
+                Cancelar
+              </button>
+              <button
+                type="submit"
+                className="flex-1 bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 disabled:bg-blue-300 disabled:cursor-not-allowed"
+                disabled={enviando}
+              >
+                {enviando ? 'Asignando...' : 'Asignar'}
               </button>
             </div>
           </form>
@@ -981,6 +1208,8 @@ const SistemaSoporteDEDTE = ({
       {modalDetalle && <ModalDetalleSolicitud solicitud={modalDetalle} onClose={() => setModalDetalle(null)} />}
       {modalNuevo && <ModalNuevaSolicitud />}
       {modalCategoria && <ModalGestionCategoria />}
+      {modalCambiarEstado && <ModalCambiarEstado solicitud={modalCambiarEstado} onClose={() => setModalCambiarEstado(null)} />}
+      {modalAsignar && <ModalAsignar solicitud={modalAsignar} onClose={() => setModalAsignar(null)} />}
     </div>
   );
 };
