@@ -37,17 +37,14 @@ const SistemaSoporteDEDTE = ({
   const ModalDetalleSolicitud = ({ solicitud, onClose }) => {
     const getEstadoBadge = (estado) => {
       const estados = {
-        pendiente: { bg: 'bg-yellow-100', text: 'text-yellow-800', icon: Clock },
-        en_revision: { bg: 'bg-blue-100', text: 'text-blue-800', icon: Eye },
-        en_proceso: { bg: 'bg-orange-100', text: 'text-orange-800', icon: AlertCircle },
-        resuelto: { bg: 'bg-green-100', text: 'text-green-800', icon: CheckCircle },
-        cerrado: { bg: 'bg-gray-100', text: 'text-gray-800', icon: CheckCircle }
+        pendiente: 'bg-amber-50 text-amber-700 border-amber-200',
+        en_revision: 'bg-blue-50 text-blue-700 border-blue-200',
+        en_proceso: 'bg-orange-50 text-orange-700 border-orange-200',
+        resuelto: 'bg-emerald-50 text-emerald-700 border-emerald-200',
+        cerrado: 'bg-slate-100 text-slate-700 border-slate-200'
       };
-      const config = estados[estado];
-      const Icon = config.icon;
       return (
-        <span className={`${config.bg} ${config.text} px-3 py-1 rounded-full text-xs font-medium flex items-center gap-1 w-fit`}>
-          <Icon size={14} />
+        <span className={`${estados[estado]} px-3 py-1.5 rounded-lg border text-xs font-semibold inline-flex items-center gap-1.5`}>
           {estado.replace('_', ' ').toUpperCase()}
         </span>
       );
@@ -55,88 +52,87 @@ const SistemaSoporteDEDTE = ({
 
     const getPrioridadBadge = (prioridad) => {
       const prioridades = {
-        baja: { bg: 'bg-gray-100', text: 'text-gray-700' },
-        media: { bg: 'bg-blue-100', text: 'text-blue-700' },
-        alta: { bg: 'bg-orange-100', text: 'text-orange-700' },
-        urgente: { bg: 'bg-red-100', text: 'text-red-700' }
+        baja: 'bg-slate-50 text-slate-700 border-slate-200',
+        media: 'bg-blue-50 text-blue-700 border-blue-200',
+        alta: 'bg-orange-50 text-orange-700 border-orange-200',
+        urgente: 'bg-red-50 text-red-700 border-red-200'
       };
-      const config = prioridades[prioridad];
       return (
-        <span className={`${config.bg} ${config.text} px-2 py-1 rounded text-xs font-medium`}>
+        <span className={`${prioridades[prioridad]} px-3 py-1.5 rounded-lg border text-xs font-semibold inline-flex items-center`}>
           {prioridad.toUpperCase()}
         </span>
       );
     };
 
     return (
-      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-        <div className="bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+      <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+        <div className="bg-white rounded-2xl border border-slate-200 max-w-4xl w-full max-h-[90vh] overflow-y-auto shadow-xl">
           {/* Header */}
-          <div className="sticky top-0 bg-white border-b px-6 py-4 flex justify-between items-start">
+          <div className="sticky top-0 bg-white border-b border-slate-200 px-6 py-4 flex justify-between items-start rounded-t-2xl">
             <div>
               <div className="flex items-center gap-3 mb-2">
-                <h2 className="text-2xl font-bold text-gray-800">{solicitud.numero_ticket}</h2>
+                <h2 className="text-2xl font-bold text-slate-900">{solicitud.numero_ticket}</h2>
                 {getEstadoBadge(solicitud.estado)}
                 {getPrioridadBadge(solicitud.prioridad)}
               </div>
-              <p className="text-gray-600">{solicitud.titulo}</p>
+              <p className="text-slate-600 font-medium">{solicitud.titulo}</p>
             </div>
-            <button onClick={onClose} className="text-gray-400 hover:text-gray-600">
-              <X size={24} />
+            <button onClick={onClose} className="text-slate-400 hover:text-slate-600 transition-colors">
+              <X size={24} strokeWidth={2} />
             </button>
           </div>
 
           {/* Contenido */}
           <div className="p-6 space-y-6">
             {/* Información del Estudiante */}
-            <div className="bg-gray-50 rounded-lg p-4">
-              <h3 className="font-semibold text-gray-800 mb-3 flex items-center gap-2">
-                <BookOpen size={18} />
+            <div className="bg-slate-50 rounded-xl border border-slate-200 p-4">
+              <h3 className="font-semibold text-slate-900 mb-3 flex items-center gap-2">
+                <BookOpen size={18} strokeWidth={2} />
                 Información del Estudiante
               </h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <p className="text-sm text-gray-600">Nombre Completo</p>
-                  <p className="font-medium text-gray-800">{solicitud.nombre_estudiante}</p>
+                  <p className="text-sm text-slate-600 font-semibold">Nombre Completo</p>
+                  <p className="font-medium text-slate-900 mt-0.5">{solicitud.nombre_estudiante}</p>
                 </div>
                 <div>
-                  <p className="text-sm text-gray-600">Matrícula</p>
-                  <p className="font-medium text-gray-800">{solicitud.matricula || 'No proporcionada'}</p>
+                  <p className="text-sm text-slate-600 font-semibold">Matrícula</p>
+                  <p className="font-medium text-slate-900 mt-0.5">{solicitud.matricula || 'No proporcionada'}</p>
                 </div>
                 <div>
-                  <p className="text-sm text-gray-600 flex items-center gap-1">
-                    <Phone size={14} /> Teléfono
+                  <p className="text-sm text-slate-600 flex items-center gap-1 font-semibold">
+                    <Phone size={14} strokeWidth={2} /> Teléfono
                   </p>
-                  <a href={`tel:${solicitud.telefono}`} className="font-medium text-blue-600 hover:underline">
+                  <a href={`tel:${solicitud.telefono}`} className="font-medium text-blue-600 hover:text-blue-700 mt-0.5 inline-block">
                     {solicitud.telefono}
                   </a>
                 </div>
                 <div>
-                  <p className="text-sm text-gray-600 flex items-center gap-1">
-                    <Mail size={14} /> Email
+                  <p className="text-sm text-slate-600 flex items-center gap-1 font-semibold">
+                    <Mail size={14} strokeWidth={2} /> Email
                   </p>
-                  <a href={`mailto:${solicitud.email}`} className="font-medium text-blue-600 hover:underline text-sm">
+                  <a href={`mailto:${solicitud.email}`} className="font-medium text-blue-600 hover:text-blue-700 text-sm mt-0.5 inline-block">
                     {solicitud.email}
                   </a>
                 </div>
                 <div>
-                  <p className="text-sm text-gray-600">Facultad</p>
-                  <p className="font-medium text-gray-800">{solicitud.facultad}</p>
+                  <p className="text-sm text-slate-600 font-semibold">Facultad</p>
+                  <p className="font-medium text-slate-900 mt-0.5">{solicitud.facultad}</p>
                 </div>
                 <div>
-                  <p className="text-sm text-gray-600">Carrera</p>
-                  <p className="font-medium text-gray-800">{solicitud.carrera}</p>
+                  <p className="text-sm text-slate-600 font-semibold">Carrera</p>
+                  <p className="font-medium text-slate-900 mt-0.5">{solicitud.carrera}</p>
                 </div>
               </div>
             </div>
 
             {/* Descripción del Problema */}
             <div>
-              <h3 className="font-semibold text-gray-800 mb-2 flex items-center gap-2">
-                <MessageSquare size={18} />
+              <h3 className="font-semibold text-slate-900 mb-2 flex items-center gap-2">
+                <MessageSquare size={18} strokeWidth={2} />
                 Descripción del Problema
               </h3>
-              <p className="text-gray-700 bg-gray-50 p-4 rounded-lg whitespace-pre-wrap">
+              <p className="text-slate-700 bg-slate-50 border border-slate-200 p-4 rounded-xl whitespace-pre-wrap">
                 {solicitud.descripcion}
               </p>
             </div>
@@ -144,26 +140,26 @@ const SistemaSoporteDEDTE = ({
             {/* Archivos Adjuntos */}
             {solicitud.adjuntos && solicitud.adjuntos.length > 0 && (
               <div>
-                <h3 className="font-semibold text-gray-800 mb-3 flex items-center gap-2">
-                  <FileText size={18} />
+                <h3 className="font-semibold text-slate-900 mb-3 flex items-center gap-2">
+                  <FileText size={18} strokeWidth={2} />
                   Archivos Adjuntos ({solicitud.adjuntos.length})
                 </h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                   {solicitud.adjuntos.map((archivo, idx) => (
-                    <div key={idx} className="flex items-center gap-3 bg-gray-50 p-3 rounded-lg border border-gray-200">
-                      <div className="bg-blue-100 p-2 rounded">
+                    <div key={idx} className="flex items-center gap-3 bg-slate-50 p-3 rounded-xl border border-slate-200">
+                      <div className="bg-blue-50 border border-blue-200 p-2 rounded-lg">
                         {archivo.tipo.includes('image') ? (
-                          <FileText size={20} className="text-blue-600" />
+                          <FileText size={20} className="text-blue-600" strokeWidth={2} />
                         ) : (
-                          <FileText size={20} className="text-blue-600" />
+                          <FileText size={20} className="text-blue-600" strokeWidth={2} />
                         )}
                       </div>
                       <div className="flex-1 min-w-0">
-                        <p className="font-medium text-gray-800 text-sm truncate">{archivo.nombre}</p>
-                        <p className="text-xs text-gray-500">{archivo.tipo}</p>
+                        <p className="font-semibold text-slate-900 text-sm truncate">{archivo.nombre}</p>
+                        <p className="text-xs text-slate-500 font-medium mt-0.5">{archivo.tipo}</p>
                       </div>
-                      <button className="text-blue-600 hover:text-blue-700 flex-shrink-0">
-                        <Download size={18} />
+                      <button className="text-blue-600 hover:text-blue-700 flex-shrink-0 transition-colors">
+                        <Download size={18} strokeWidth={2} />
                       </button>
                     </div>
                   ))}
@@ -172,24 +168,24 @@ const SistemaSoporteDEDTE = ({
             )}
 
             {/* Información Adicional */}
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-4 pt-4 border-t">
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-4 pt-4 border-t border-slate-200">
               <div>
-                <p className="text-sm text-gray-600">Categoría</p>
+                <p className="text-sm text-slate-600 font-semibold">Categoría</p>
                 <div className="flex items-center gap-2 mt-1">
                   <div className="w-3 h-3 rounded-full" style={{ backgroundColor: solicitud.categoria?.color }}></div>
-                  <p className="font-medium text-gray-800 text-sm">{solicitud.categoria?.nombre}</p>
+                  <p className="font-medium text-slate-900 text-sm">{solicitud.categoria?.nombre}</p>
                 </div>
               </div>
               <div>
-                <p className="text-sm text-gray-600">Canal</p>
-                <p className="font-medium text-gray-800 text-sm capitalize">{solicitud.canal}</p>
+                <p className="text-sm text-slate-600 font-semibold">Canal</p>
+                <p className="font-medium text-slate-900 text-sm capitalize mt-1">{solicitud.canal}</p>
               </div>
               <div>
-                <p className="text-sm text-gray-600">Fecha Creación</p>
-                <p className="font-medium text-gray-800 text-sm">
-                  {new Date(solicitud.created_at).toLocaleDateString('es-ES', { 
-                    day: '2-digit', 
-                    month: 'short', 
+                <p className="text-sm text-slate-600 font-semibold">Fecha Creación</p>
+                <p className="font-medium text-slate-900 text-sm mt-1">
+                  {new Date(solicitud.created_at).toLocaleDateString('es-ES', {
+                    day: '2-digit',
+                    month: 'short',
                     year: 'numeric',
                     hour: '2-digit',
                     minute: '2-digit'
@@ -198,23 +194,23 @@ const SistemaSoporteDEDTE = ({
               </div>
               {solicitud.asignado_a && (
                 <div>
-                  <p className="text-sm text-gray-600">Asignado a</p>
-                  <p className="font-medium text-gray-800 text-sm">{solicitud.asignado_a}</p>
+                  <p className="text-sm text-slate-600 font-semibold">Asignado a</p>
+                  <p className="font-medium text-slate-900 text-sm mt-1">{solicitud.asignado_a}</p>
                 </div>
               )}
             </div>
 
             {/* Acciones */}
-            <div className="flex gap-3 pt-4 border-t">
+            <div className="flex gap-3 pt-4 border-t border-slate-200">
               <button
                 onClick={() => setModalCambiarEstado(solicitud)}
-                className="flex-1 bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 font-medium"
+                className="flex-1 bg-slate-900 text-white py-2.5 px-4 rounded-xl hover:bg-slate-800 font-semibold shadow-sm transition-all"
               >
                 Cambiar Estado
               </button>
               <button
                 onClick={() => setModalAsignar(solicitud)}
-                className="flex-1 bg-gray-100 text-gray-700 py-2 px-4 rounded-lg hover:bg-gray-200 font-medium"
+                className="flex-1 bg-slate-100 text-slate-700 py-2.5 px-4 rounded-xl hover:bg-slate-200 font-semibold shadow-sm transition-all"
               >
                 Asignar
               </button>
@@ -224,9 +220,9 @@ const SistemaSoporteDEDTE = ({
                   const telefono = solicitud.telefono.replace(/\D/g, '');
                   window.open(`https://wa.me/${telefono}?text=${encodeURIComponent(mensaje)}`, '_blank');
                 }}
-                className="bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700 font-medium flex items-center gap-2"
+                className="bg-green-600 text-white py-2.5 px-4 rounded-xl hover:bg-green-700 font-semibold shadow-sm flex items-center gap-2 transition-all"
               >
-                <ExternalLink size={18} />
+                <ExternalLink size={18} strokeWidth={2} />
                 WhatsApp
               </button>
             </div>
@@ -239,7 +235,7 @@ const SistemaSoporteDEDTE = ({
   // Componente: Tabla de Solicitudes
   const TablaSolicitudes = () => {
     const solicitudesFiltradas = solicitudes.filter(s => {
-      const matchBusqueda = !filtros.busqueda || 
+      const matchBusqueda = !filtros.busqueda ||
         s.nombre_estudiante.toLowerCase().includes(filtros.busqueda.toLowerCase()) ||
         s.numero_ticket.toLowerCase().includes(filtros.busqueda.toLowerCase()) ||
         s.titulo.toLowerCase().includes(filtros.busqueda.toLowerCase());
@@ -250,38 +246,38 @@ const SistemaSoporteDEDTE = ({
 
     const getEstadoBadge = (estado) => {
       const estados = {
-        pendiente: 'bg-yellow-100 text-yellow-800',
-        en_revision: 'bg-blue-100 text-blue-800',
-        en_proceso: 'bg-orange-100 text-orange-800',
-        resuelto: 'bg-green-100 text-green-800',
-        cerrado: 'bg-gray-100 text-gray-800'
+        pendiente: 'bg-amber-50 text-amber-700 border-amber-200',
+        en_revision: 'bg-blue-50 text-blue-700 border-blue-200',
+        en_proceso: 'bg-orange-50 text-orange-700 border-orange-200',
+        resuelto: 'bg-emerald-50 text-emerald-700 border-emerald-200',
+        cerrado: 'bg-slate-100 text-slate-700 border-slate-200'
       };
       return (
-        <span className={`${estados[estado]} px-2 py-1 rounded-full text-xs font-medium`}>
+        <span className={`${estados[estado]} px-2.5 py-1 rounded-lg text-xs font-semibold border inline-flex items-center`}>
           {estado.replace('_', ' ')}
         </span>
       );
     };
 
     return (
-      <div className="space-y-4">
+      <div className="space-y-6">
         {/* Filtros y búsqueda */}
-        <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
+        <div className="bg-white/80 backdrop-blur-sm p-6 rounded-2xl shadow-sm border border-slate-200 card-hover">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={18} />
+              <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-slate-400" size={18} strokeWidth={2} />
               <input
                 type="text"
                 placeholder="Buscar por nombre, ticket o título..."
                 value={filtros.busqueda}
                 onChange={(e) => setFiltros({...filtros, busqueda: e.target.value})}
-                className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full pl-11 pr-4 py-3 border border-slate-200 rounded-xl text-sm text-slate-900 placeholder:text-slate-400 focus:ring-2 focus:ring-slate-900 focus:border-slate-900 transition-all shadow-sm"
               />
             </div>
             <select
               value={filtros.estado}
               onChange={(e) => setFiltros({...filtros, estado: e.target.value})}
-              className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+              className="px-4 py-3 border border-slate-200 rounded-xl text-sm text-slate-900 font-medium focus:ring-2 focus:ring-slate-900 focus:border-slate-900 transition-all bg-white shadow-sm"
             >
               <option value="">Todos los estados</option>
               <option value="pendiente">Pendiente</option>
@@ -291,7 +287,7 @@ const SistemaSoporteDEDTE = ({
             <select
               value={filtros.facultad}
               onChange={(e) => setFiltros({...filtros, facultad: e.target.value})}
-              className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+              className="px-4 py-3 border border-slate-200 rounded-xl text-sm text-slate-900 font-medium focus:ring-2 focus:ring-slate-900 focus:border-slate-900 transition-all bg-white shadow-sm"
             >
               <option value="">Todas las facultades</option>
               <option value="Cs. Jurídicas, Políticas y Sociales">Cs. Jurídicas, Políticas y Sociales</option>
@@ -314,37 +310,37 @@ const SistemaSoporteDEDTE = ({
             </select>
             <button
               onClick={() => setModalNuevo(true)}
-              className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 font-medium flex items-center justify-center gap-2"
+              className="bg-slate-900 text-white px-5 py-3 rounded-xl hover:bg-slate-800 font-semibold text-sm flex items-center justify-center gap-2 shadow-sm hover:shadow-md transition-all"
             >
-              <Plus size={18} />
+              <Plus size={18} strokeWidth={2.5} />
               Nueva Solicitud
             </button>
           </div>
         </div>
 
         {/* Tabla */}
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+        <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full">
-              <thead className="bg-gray-50 border-b border-gray-200">
+              <thead className="bg-slate-50/80 border-b border-slate-200">
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Ticket</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Estudiante</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Título</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Categoría</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Estado</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Fecha</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Acciones</th>
+                  <th className="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wide">Ticket</th>
+                  <th className="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wide">Estudiante</th>
+                  <th className="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wide">Título</th>
+                  <th className="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wide">Categoría</th>
+                  <th className="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wide">Estado</th>
+                  <th className="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wide">Fecha</th>
+                  <th className="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wide">Acciones</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-200">
+              <tbody className="divide-y divide-slate-100 bg-white/50">
                 {solicitudesFiltradas.length === 0 ? (
                   <tr>
-                    <td colSpan="7" className="px-6 py-12 text-center">
-                      <div className="text-gray-400">
-                        <FileText size={48} className="mx-auto mb-3 opacity-50" />
-                        <p className="text-lg font-medium text-gray-600">No se encontraron solicitudes</p>
-                        <p className="text-sm text-gray-500 mt-1">
+                    <td colSpan="7" className="px-6 py-16 text-center">
+                      <div className="text-slate-400">
+                        <FileText size={48} className="mx-auto mb-3 opacity-40" strokeWidth={1.5} />
+                        <p className="text-lg font-semibold text-slate-700">No se encontraron solicitudes</p>
+                        <p className="text-sm text-slate-500 mt-1.5">
                           {filtros.busqueda || filtros.estado || filtros.facultad
                             ? 'Intenta ajustar los filtros'
                             : 'Crea la primera solicitud para comenzar'}
@@ -354,40 +350,40 @@ const SistemaSoporteDEDTE = ({
                   </tr>
                 ) : (
                   solicitudesFiltradas.map((solicitud) => (
-                  <tr key={solicitud.id} className="hover:bg-gray-50 transition-colors">
+                  <tr key={solicitud.id} className="hover:bg-slate-50 transition-colors">
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm font-medium text-gray-900">{solicitud.numero_ticket}</div>
-                      <div className="text-xs text-gray-500 capitalize">{solicitud.canal}</div>
+                      <div className="text-sm font-semibold text-slate-900">{solicitud.numero_ticket}</div>
+                      <div className="text-xs text-slate-500 capitalize font-medium mt-0.5">{solicitud.canal}</div>
                     </td>
                     <td className="px-6 py-4">
-                      <div className="text-sm font-medium text-gray-900">{solicitud.nombre_estudiante}</div>
-                      <div className="text-xs text-gray-500">{solicitud.telefono}</div>
+                      <div className="text-sm font-semibold text-slate-900">{solicitud.nombre_estudiante}</div>
+                      <div className="text-xs text-slate-500 font-medium mt-0.5">{solicitud.telefono}</div>
                     </td>
                     <td className="px-6 py-4">
-                      <div className="text-sm text-gray-900 max-w-xs truncate">{solicitud.titulo}</div>
-                      <div className="text-xs text-gray-500">{solicitud.facultad}</div>
+                      <div className="text-sm text-slate-900 font-medium max-w-xs truncate">{solicitud.titulo}</div>
+                      <div className="text-xs text-slate-500 mt-0.5">{solicitud.facultad}</div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="flex items-center gap-2">
-                        <div className="w-3 h-3 rounded-full" style={{ backgroundColor: solicitud.categoria?.color }}></div>
-                        <span className="text-sm text-gray-700">{solicitud.categoria?.nombre}</span>
+                        <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: solicitud.categoria?.color }}></div>
+                        <span className="text-sm text-slate-700 font-medium">{solicitud.categoria?.nombre}</span>
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       {getEstadoBadge(solicitud.estado)}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {new Date(solicitud.created_at).toLocaleDateString('es-ES', { 
-                        day: '2-digit', 
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-600 font-medium">
+                      {new Date(solicitud.created_at).toLocaleDateString('es-ES', {
+                        day: '2-digit',
                         month: 'short'
                       })}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-semibold">
                       <button
                         onClick={() => setModalDetalle(solicitud)}
-                        className="text-blue-600 hover:text-blue-900 flex items-center gap-1"
+                        className="text-slate-900 hover:text-slate-600 flex items-center gap-1.5 transition-colors"
                       >
-                        <Eye size={16} />
+                        <Eye size={16} strokeWidth={2} />
                         Ver
                       </button>
                     </td>
@@ -416,51 +412,65 @@ const SistemaSoporteDEDTE = ({
     };
 
     return (
-      <div className="space-y-4">
+      <div className="space-y-6">
+        {/* Header Section */}
         <div className="flex justify-between items-center">
-          <h2 className="text-2xl font-bold text-gray-800">Gestión de Categorías</h2>
+          <h2 className="text-2xl font-bold text-slate-900">Gestión de Categorías</h2>
           <button
             onClick={() => { setCategoriaEditar(null); setModalCategoria(true); }}
-            className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 flex items-center gap-2"
+            className="bg-slate-900 text-white px-4 py-2.5 rounded-xl hover:bg-slate-800 font-semibold shadow-sm flex items-center gap-2 transition-all"
           >
-            <PlusCircle size={20} />
+            <PlusCircle size={20} strokeWidth={2.5} />
             Nueva Categoría
           </button>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {categorias.map((cat) => (
-            <div key={cat.id} className="bg-white p-5 rounded-lg shadow-sm border-l-4" style={{ borderColor: cat.color }}>
-              <div className="flex justify-between items-start mb-3">
-                <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ backgroundColor: cat.color + '20' }}>
-                    <div className="w-3 h-3 rounded-full" style={{ backgroundColor: cat.color }}></div>
+        {/* Categories Grid */}
+        {categorias.length === 0 ? (
+          <div className="bg-white/80 backdrop-blur-sm rounded-2xl border border-slate-200 shadow-sm p-16 text-center animate-fadeIn">
+            <FolderTree size={48} className="mx-auto mb-4 text-slate-300" strokeWidth={1.5} />
+            <p className="text-lg font-semibold text-slate-700">No hay categorías creadas</p>
+            <p className="text-sm text-slate-500 mt-1.5">Crea la primera categoría para comenzar</p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {categorias.map((cat, idx) => (
+              <div key={cat.id} className={`bg-white/80 backdrop-blur-sm p-6 rounded-2xl shadow-sm border border-slate-200 card-hover stagger-item`} style={{animationDelay: `${idx * 0.05}s`}}>
+                <div className="flex justify-between items-start mb-4">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ backgroundColor: cat.color + '15' }}>
+                      <div className="w-4 h-4 rounded-full" style={{ backgroundColor: cat.color }}></div>
+                    </div>
+                    <h3 className="font-semibold text-slate-900">{cat.nombre}</h3>
                   </div>
-                  <h3 className="font-semibold text-gray-800">{cat.nombre}</h3>
+                  <span className={`px-2.5 py-1 rounded-lg border text-xs font-semibold inline-flex items-center ${
+                    cat.activo
+                      ? 'bg-emerald-50 text-emerald-700 border-emerald-200'
+                      : 'bg-slate-100 text-slate-700 border-slate-200'
+                  }`}>
+                    {cat.activo ? 'Activo' : 'Inactivo'}
+                  </span>
                 </div>
-                <span className={`text-xs px-2 py-1 rounded-full ${cat.activo ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-700'}`}>
-                  {cat.activo ? 'Activo' : 'Inactivo'}
-                </span>
+                <div className="flex gap-2.5">
+                  <button
+                    onClick={() => { setCategoriaEditar(cat); setModalCategoria(true); }}
+                    className="flex-1 text-slate-600 hover:text-slate-900 px-3 py-2 rounded-lg hover:bg-slate-50 flex items-center justify-center gap-2 text-sm font-medium transition-colors border border-slate-200"
+                  >
+                    <Edit2 size={16} strokeWidth={2} />
+                    Editar
+                  </button>
+                  <button
+                    onClick={() => handleEliminar(cat.id)}
+                    className="flex-1 text-red-600 hover:text-red-700 px-3 py-2 rounded-lg hover:bg-red-50 flex items-center justify-center gap-2 text-sm font-medium transition-colors border border-slate-200"
+                  >
+                    <Trash2 size={16} strokeWidth={2} />
+                    Eliminar
+                  </button>
+                </div>
               </div>
-              <div className="flex gap-2">
-                <button
-                  onClick={() => { setCategoriaEditar(cat); setModalCategoria(true); }}
-                  className="flex-1 bg-gray-100 text-gray-700 px-3 py-2 rounded hover:bg-gray-200 flex items-center justify-center gap-2 text-sm"
-                >
-                  <Edit2 size={14} />
-                  Editar
-                </button>
-                <button
-                  onClick={() => handleEliminar(cat.id)}
-                  className="flex-1 bg-red-50 text-red-600 px-3 py-2 rounded hover:bg-red-100 flex items-center justify-center gap-2 text-sm"
-                >
-                  <Trash2 size={14} />
-                  Eliminar
-                </button>
-              </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
       </div>
     );
   };
@@ -471,7 +481,7 @@ const SistemaSoporteDEDTE = ({
     const pendientes = solicitudes.filter(s => s.estado === 'pendiente').length;
     const enProceso = solicitudes.filter(s => s.estado === 'en_proceso').length;
     const resueltas = solicitudes.filter(s => s.estado === 'resuelto').length;
-    
+
     const porCategoria = categorias.map(cat => ({
       nombre: cat.nombre,
       cantidad: solicitudes.filter(s => s.categoria?.nombre === cat.nombre).length,
@@ -486,67 +496,67 @@ const SistemaSoporteDEDTE = ({
     return (
       <div className="space-y-6">
         <div>
-          <h2 className="text-2xl font-bold text-gray-800">Dashboard de Analíticas</h2>
-          <p className="text-gray-600 mt-1">Período: Octubre 2025</p>
+          <h2 className="text-2xl font-bold text-slate-900">Dashboard de Analíticas</h2>
+          <p className="text-slate-600 font-semibold mt-1">Período: Octubre 2025</p>
         </div>
 
         {/* Métricas principales */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-          <div className="bg-gradient-to-br from-blue-500 to-blue-600 text-white p-6 rounded-lg shadow-lg">
-            <div className="flex items-center justify-between mb-2">
-              <p className="text-blue-100 text-sm font-medium">Total Solicitudes</p>
-              <BarChart3 size={24} className="text-blue-200" />
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+          <div className="bg-white/80 backdrop-blur-sm border border-slate-200 p-6 rounded-2xl shadow-sm card-hover stagger-item">
+            <div className="flex items-center justify-between mb-3">
+              <p className="text-slate-600 text-sm font-semibold">Total Solicitudes</p>
+              <BarChart3 size={20} className="text-slate-500" strokeWidth={2} />
             </div>
-            <p className="text-4xl font-bold">{totalSolicitudes}</p>
-            <p className="text-blue-100 text-xs mt-2">Últimos 30 días</p>
+            <p className="text-4xl font-bold text-slate-900">{totalSolicitudes}</p>
+            <p className="text-slate-500 text-xs font-semibold mt-2">Últimos 30 días</p>
           </div>
 
-          <div className="bg-gradient-to-br from-yellow-500 to-yellow-600 text-white p-6 rounded-lg shadow-lg">
-            <div className="flex items-center justify-between mb-2">
-              <p className="text-yellow-100 text-sm font-medium">Pendientes</p>
-              <Clock size={24} className="text-yellow-200" />
+          <div className="bg-white/80 backdrop-blur-sm border border-slate-200 p-6 rounded-2xl shadow-sm card-hover stagger-item">
+            <div className="flex items-center justify-between mb-3">
+              <p className="text-slate-600 text-sm font-semibold">Pendientes</p>
+              <Clock size={20} className="text-amber-600" strokeWidth={2} />
             </div>
-            <p className="text-4xl font-bold">{pendientes}</p>
-            <p className="text-yellow-100 text-xs mt-2">{((pendientes/totalSolicitudes)*100).toFixed(1)}% del total</p>
+            <p className="text-4xl font-bold text-slate-900">{pendientes}</p>
+            <p className="text-slate-500 text-xs font-semibold mt-2">{((pendientes/totalSolicitudes)*100).toFixed(1)}% del total</p>
           </div>
 
-          <div className="bg-gradient-to-br from-orange-500 to-orange-600 text-white p-6 rounded-lg shadow-lg">
-            <div className="flex items-center justify-between mb-2">
-              <p className="text-orange-100 text-sm font-medium">En Proceso</p>
-              <AlertCircle size={24} className="text-orange-200" />
+          <div className="bg-white/80 backdrop-blur-sm border border-slate-200 p-6 rounded-2xl shadow-sm card-hover stagger-item">
+            <div className="flex items-center justify-between mb-3">
+              <p className="text-slate-600 text-sm font-semibold">En Proceso</p>
+              <AlertCircle size={20} className="text-orange-600" strokeWidth={2} />
             </div>
-            <p className="text-4xl font-bold">{enProceso}</p>
-            <p className="text-orange-100 text-xs mt-2">{((enProceso/totalSolicitudes)*100).toFixed(1)}% del total</p>
+            <p className="text-4xl font-bold text-slate-900">{enProceso}</p>
+            <p className="text-slate-500 text-xs font-semibold mt-2">{((enProceso/totalSolicitudes)*100).toFixed(1)}% del total</p>
           </div>
 
-          <div className="bg-gradient-to-br from-green-500 to-green-600 text-white p-6 rounded-lg shadow-lg">
-            <div className="flex items-center justify-between mb-2">
-              <p className="text-green-100 text-sm font-medium">Resueltas</p>
-              <CheckCircle size={24} className="text-green-200" />
+          <div className="bg-white/80 backdrop-blur-sm border border-slate-200 p-6 rounded-2xl shadow-sm card-hover stagger-item">
+            <div className="flex items-center justify-between mb-3">
+              <p className="text-slate-600 text-sm font-semibold">Resueltas</p>
+              <CheckCircle size={20} className="text-emerald-600" strokeWidth={2} />
             </div>
-            <p className="text-4xl font-bold">{resueltas}</p>
-            <p className="text-green-100 text-xs mt-2">{((resueltas/totalSolicitudes)*100).toFixed(1)}% del total</p>
+            <p className="text-4xl font-bold text-slate-900">{resueltas}</p>
+            <p className="text-slate-500 text-xs font-semibold mt-2">{((resueltas/totalSolicitudes)*100).toFixed(1)}% del total</p>
           </div>
         </div>
 
         {/* Gráficos */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Por Categoría */}
-          <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
-            <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
-              <FolderTree size={20} />
+          <div className="bg-white/80 backdrop-blur-sm p-6 rounded-2xl shadow-sm border border-slate-200 card-hover">
+            <h3 className="text-lg font-bold text-slate-900 mb-5 flex items-center gap-2">
+              <FolderTree size={20} strokeWidth={2} />
               Solicitudes por Categoría
             </h3>
             <div className="space-y-4">
               {porCategoria.map((item, idx) => (
                 <div key={idx}>
                   <div className="flex justify-between text-sm mb-2">
-                    <span className="text-gray-700 font-medium">{item.nombre}</span>
-                    <span className="font-semibold text-gray-800">{item.cantidad} ({((item.cantidad/totalSolicitudes)*100).toFixed(0)}%)</span>
+                    <span className="text-slate-700 font-semibold">{item.nombre}</span>
+                    <span className="font-bold text-slate-900">{item.cantidad} ({((item.cantidad/totalSolicitudes)*100).toFixed(0)}%)</span>
                   </div>
-                  <div className="w-full bg-gray-200 rounded-full h-3">
+                  <div className="w-full bg-slate-100 rounded-full h-2.5">
                     <div
-                      className="h-3 rounded-full transition-all duration-300"
+                      className="h-2.5 rounded-full transition-all duration-300"
                       style={{
                         width: `${(item.cantidad / totalSolicitudes) * 100}%`,
                         backgroundColor: item.color
@@ -559,21 +569,21 @@ const SistemaSoporteDEDTE = ({
           </div>
 
           {/* Por Facultad */}
-          <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
-            <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
-              <BookOpen size={20} />
+          <div className="bg-white/80 backdrop-blur-sm p-6 rounded-2xl shadow-sm border border-slate-200 card-hover">
+            <h3 className="text-lg font-bold text-slate-900 mb-5 flex items-center gap-2">
+              <BookOpen size={20} strokeWidth={2} />
               Solicitudes por Facultad
             </h3>
             <div className="space-y-4">
               {porFacultad.map((item, idx) => (
                 <div key={idx}>
                   <div className="flex justify-between text-sm mb-2">
-                    <span className="text-gray-700 font-medium truncate">{item.facultad}</span>
-                    <span className="font-semibold text-gray-800">{item.cantidad}</span>
+                    <span className="text-slate-700 font-semibold truncate pr-2">{item.facultad}</span>
+                    <span className="font-bold text-slate-900 flex-shrink-0">{item.cantidad}</span>
                   </div>
-                  <div className="w-full bg-gray-200 rounded-full h-3">
+                  <div className="w-full bg-slate-100 rounded-full h-2.5">
                     <div
-                      className="h-3 rounded-full bg-blue-500 transition-all duration-300"
+                      className="h-2.5 rounded-full bg-slate-700 transition-all duration-300"
                       style={{ width: `${(item.cantidad / totalSolicitudes) * 100}%` }}
                     />
                   </div>
@@ -584,18 +594,18 @@ const SistemaSoporteDEDTE = ({
         </div>
 
         {/* Estadísticas adicionales */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div className="bg-white p-5 rounded-lg shadow-sm border border-gray-200">
-            <p className="text-sm text-gray-600 mb-1">Tiempo Promedio de Resolución</p>
-            <p className="text-2xl font-bold text-gray-800">2.5 días</p>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="bg-white/80 backdrop-blur-sm p-6 rounded-2xl shadow-sm border border-slate-200 card-hover stagger-item">
+            <p className="text-sm text-slate-600 font-semibold mb-2">Tiempo Promedio de Resolución</p>
+            <p className="text-3xl font-bold text-slate-900">2.5 días</p>
           </div>
-          <div className="bg-white p-5 rounded-lg shadow-sm border border-gray-200">
-            <p className="text-sm text-gray-600 mb-1">Canal Más Usado</p>
-            <p className="text-2xl font-bold text-gray-800">WhatsApp</p>
+          <div className="bg-white/80 backdrop-blur-sm p-6 rounded-2xl shadow-sm border border-slate-200 card-hover stagger-item">
+            <p className="text-sm text-slate-600 font-semibold mb-2">Canal Más Usado</p>
+            <p className="text-3xl font-bold text-slate-900">WhatsApp</p>
           </div>
-          <div className="bg-white p-5 rounded-lg shadow-sm border border-gray-200">
-            <p className="text-sm text-gray-600 mb-1">Tasa de Satisfacción</p>
-            <p className="text-2xl font-bold text-gray-800">94.2%</p>
+          <div className="bg-white/80 backdrop-blur-sm p-6 rounded-2xl shadow-sm border border-slate-200 card-hover stagger-item">
+            <p className="text-sm text-slate-600 font-semibold mb-2">Tasa de Satisfacción</p>
+            <p className="text-3xl font-bold text-slate-900">94.2%</p>
           </div>
         </div>
       </div>
@@ -653,68 +663,68 @@ const SistemaSoporteDEDTE = ({
     };
 
     return (
-      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-        <div className="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-          <div className="sticky top-0 bg-white border-b px-6 py-4 flex justify-between items-center">
-            <h2 className="text-xl font-bold text-gray-800">Nueva Solicitud de Soporte</h2>
-            <button onClick={() => setModalNuevo(false)} className="text-gray-400 hover:text-gray-600">
-              <X size={24} />
+      <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+        <div className="bg-white rounded-2xl border border-slate-200 max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-xl">
+          <div className="sticky top-0 bg-white border-b border-slate-200 px-6 py-4 flex justify-between items-center rounded-t-2xl">
+            <h2 className="text-xl font-bold text-slate-900">Nueva Solicitud de Soporte</h2>
+            <button onClick={() => setModalNuevo(false)} className="text-slate-400 hover:text-slate-600 transition-colors">
+              <X size={24} strokeWidth={2} />
             </button>
           </div>
 
           <form onSubmit={handleSubmit} className="p-6 space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Nombre Completo *</label>
+                <label className="block text-sm font-semibold text-slate-900 mb-1.5">Nombre Completo *</label>
                 <input
                   type="text"
                   value={formData.nombre_estudiante}
                   onChange={(e) => setFormData({...formData, nombre_estudiante: e.target.value})}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-3 py-2 border border-slate-200 rounded-xl focus:ring-2 focus:ring-slate-900 focus:border-slate-900 text-slate-900 transition-all"
                   placeholder="Ej: Juan Pérez"
                   required
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Teléfono *</label>
+                <label className="block text-sm font-semibold text-slate-900 mb-1.5">Teléfono *</label>
                 <input
                   type="tel"
                   value={formData.telefono}
                   onChange={(e) => setFormData({...formData, telefono: e.target.value})}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-3 py-2 border border-slate-200 rounded-xl focus:ring-2 focus:ring-slate-900 focus:border-slate-900 text-slate-900 transition-all"
                   placeholder="809-555-0123"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                <label className="block text-sm font-semibold text-slate-900 mb-1.5">Email</label>
                 <input
                   type="email"
                   value={formData.email}
                   onChange={(e) => setFormData({...formData, email: e.target.value})}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-3 py-2 border border-slate-200 rounded-xl focus:ring-2 focus:ring-slate-900 focus:border-slate-900 text-slate-900 transition-all"
                   placeholder="estudiante@universidad.edu"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Matrícula</label>
+                <label className="block text-sm font-semibold text-slate-900 mb-1.5">Matrícula</label>
                 <input
                   type="text"
                   value={formData.matricula}
                   onChange={(e) => setFormData({...formData, matricula: e.target.value})}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-3 py-2 border border-slate-200 rounded-xl focus:ring-2 focus:ring-slate-900 focus:border-slate-900 text-slate-900 transition-all"
                   placeholder="A00123456"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Facultad *</label>
+                <label className="block text-sm font-semibold text-slate-900 mb-1.5">Facultad *</label>
                 <select
                   value={formData.facultad}
                   onChange={(e) => setFormData({...formData, facultad: e.target.value})}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-3 py-2 border border-slate-200 rounded-xl focus:ring-2 focus:ring-slate-900 focus:border-slate-900 text-slate-900 transition-all bg-white"
                 >
                   <option value="">Seleccionar...</option>
                   <option value="Cs. Jurídicas, Políticas y Sociales">Cs. Jurídicas, Políticas y Sociales</option>
@@ -738,22 +748,22 @@ const SistemaSoporteDEDTE = ({
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Carrera</label>
+                <label className="block text-sm font-semibold text-slate-900 mb-1.5">Carrera</label>
                 <input
                   type="text"
                   value={formData.carrera}
                   onChange={(e) => setFormData({...formData, carrera: e.target.value})}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-3 py-2 border border-slate-200 rounded-xl focus:ring-2 focus:ring-slate-900 focus:border-slate-900 text-slate-900 transition-all"
                   placeholder="Ej: Ingeniería Civil"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Categoría *</label>
+                <label className="block text-sm font-semibold text-slate-900 mb-1.5">Categoría *</label>
                 <select
                   value={formData.categoria_id}
                   onChange={(e) => setFormData({...formData, categoria_id: e.target.value})}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-3 py-2 border border-slate-200 rounded-xl focus:ring-2 focus:ring-slate-900 focus:border-slate-900 text-slate-900 transition-all bg-white"
                   required
                 >
                   <option value="">Seleccionar...</option>
@@ -764,11 +774,11 @@ const SistemaSoporteDEDTE = ({
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Prioridad</label>
+                <label className="block text-sm font-semibold text-slate-900 mb-1.5">Prioridad</label>
                 <select
                   value={formData.prioridad}
                   onChange={(e) => setFormData({...formData, prioridad: e.target.value})}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-3 py-2 border border-slate-200 rounded-xl focus:ring-2 focus:ring-slate-900 focus:border-slate-900 text-slate-900 transition-all bg-white"
                 >
                   <option value="baja">Baja</option>
                   <option value="media">Media</option>
@@ -778,11 +788,11 @@ const SistemaSoporteDEDTE = ({
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Canal</label>
+                <label className="block text-sm font-semibold text-slate-900 mb-1.5">Canal</label>
                 <select
                   value={formData.canal}
                   onChange={(e) => setFormData({...formData, canal: e.target.value})}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-3 py-2 border border-slate-200 rounded-xl focus:ring-2 focus:ring-slate-900 focus:border-slate-900 text-slate-900 transition-all bg-white"
                 >
                   <option value="whatsapp">WhatsApp</option>
                   <option value="formulario">Formulario Web</option>
@@ -793,46 +803,46 @@ const SistemaSoporteDEDTE = ({
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Título del Problema *</label>
+              <label className="block text-sm font-semibold text-slate-900 mb-1.5">Título del Problema *</label>
               <input
                 type="text"
                 value={formData.titulo}
                 onChange={(e) => setFormData({...formData, titulo: e.target.value})}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full px-3 py-2 border border-slate-200 rounded-xl focus:ring-2 focus:ring-slate-900 focus:border-slate-900 text-slate-900 transition-all"
                 placeholder="Breve descripción del problema"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Descripción Detallada *</label>
+              <label className="block text-sm font-semibold text-slate-900 mb-1.5">Descripción Detallada *</label>
               <textarea
                 value={formData.descripcion}
                 onChange={(e) => setFormData({...formData, descripcion: e.target.value})}
                 rows={4}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full px-3 py-2 border border-slate-200 rounded-xl focus:ring-2 focus:ring-slate-900 focus:border-slate-900 text-slate-900 transition-all"
                 placeholder="Describe el problema con el mayor detalle posible..."
               />
             </div>
 
-            <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
-              <FileText className="mx-auto text-gray-400 mb-2" size={32} />
-              <p className="text-sm text-gray-600 mb-1">Arrastra archivos aquí o haz clic para seleccionar</p>
-              <p className="text-xs text-gray-500">PNG, JPG, PDF hasta 10MB</p>
+            <div className="border-2 border-dashed border-slate-200 rounded-xl p-6 text-center bg-slate-50">
+              <FileText className="mx-auto text-slate-400 mb-2" size={32} strokeWidth={2} />
+              <p className="text-sm text-slate-600 font-medium mb-1">Arrastra archivos aquí o haz clic para seleccionar</p>
+              <p className="text-xs text-slate-500">PNG, JPG, PDF hasta 10MB</p>
               <input type="file" multiple className="hidden" />
             </div>
 
-            <div className="flex gap-3 pt-4">
+            <div className="flex gap-3 pt-4 border-t border-slate-200">
               <button
                 type="button"
                 onClick={() => setModalNuevo(false)}
-                className="flex-1 bg-gray-100 text-gray-700 py-2 px-4 rounded-lg hover:bg-gray-200 font-medium"
+                className="flex-1 bg-slate-100 text-slate-700 py-2.5 px-4 rounded-xl hover:bg-slate-200 font-semibold shadow-sm transition-all"
                 disabled={enviando}
               >
                 Cancelar
               </button>
               <button
                 type="submit"
-                className="flex-1 bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 font-medium disabled:bg-blue-300 disabled:cursor-not-allowed"
+                className="flex-1 bg-slate-900 text-white py-2.5 px-4 rounded-xl hover:bg-slate-800 font-semibold shadow-sm disabled:bg-slate-300 disabled:cursor-not-allowed transition-all"
                 disabled={enviando}
               >
                 {enviando ? 'Creando...' : 'Crear Solicitud'}
@@ -865,31 +875,31 @@ const SistemaSoporteDEDTE = ({
     };
 
     return (
-      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-        <div className="bg-white rounded-lg max-w-md w-full">
-          <div className="border-b px-6 py-4 flex justify-between items-center">
-            <h2 className="text-xl font-bold text-gray-800">Cambiar Estado</h2>
-            <button onClick={onClose} className="text-gray-400 hover:text-gray-600">
-              <X size={24} />
+      <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+        <div className="bg-white rounded-2xl border border-slate-200 max-w-md w-full shadow-xl">
+          <div className="border-b border-slate-200 px-6 py-4 flex justify-between items-center">
+            <h2 className="text-xl font-bold text-slate-900">Cambiar Estado</h2>
+            <button onClick={onClose} className="text-slate-400 hover:text-slate-600 transition-colors">
+              <X size={24} strokeWidth={2} />
             </button>
           </div>
 
           <form onSubmit={handleSubmit} className="p-6 space-y-4">
-            <div>
-              <p className="text-sm text-gray-600 mb-2">
-                Ticket: <span className="font-semibold">{solicitud.numero_ticket}</span>
+            <div className="bg-slate-50 rounded-xl border border-slate-200 p-4 space-y-2">
+              <p className="text-sm text-slate-600">
+                Ticket: <span className="font-semibold text-slate-900">{solicitud.numero_ticket}</span>
               </p>
-              <p className="text-sm text-gray-600">
-                Estado actual: <span className="font-semibold capitalize">{solicitud.estado.replace('_', ' ')}</span>
+              <p className="text-sm text-slate-600">
+                Estado actual: <span className="font-semibold text-slate-900 capitalize">{solicitud.estado.replace('_', ' ')}</span>
               </p>
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Nuevo Estado *</label>
+              <label className="block text-sm font-semibold text-slate-900 mb-1.5">Nuevo Estado *</label>
               <select
                 value={nuevoEstado}
                 onChange={(e) => setNuevoEstado(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-slate-200 rounded-xl focus:ring-2 focus:ring-slate-900 focus:border-slate-900 text-slate-900 transition-all bg-white"
                 required
               >
                 <option value="pendiente">Pendiente</option>
@@ -901,28 +911,28 @@ const SistemaSoporteDEDTE = ({
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Comentario (opcional)</label>
+              <label className="block text-sm font-semibold text-slate-900 mb-1.5">Comentario (opcional)</label>
               <textarea
                 value={comentario}
                 onChange={(e) => setComentario(e.target.value)}
                 rows={3}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-slate-200 rounded-xl focus:ring-2 focus:ring-slate-900 focus:border-slate-900 text-slate-900 transition-all"
                 placeholder="Agrega un comentario sobre este cambio..."
               />
             </div>
 
-            <div className="flex gap-3 pt-4">
+            <div className="flex gap-3 pt-4 border-t border-slate-200">
               <button
                 type="button"
                 onClick={onClose}
-                className="flex-1 bg-gray-100 text-gray-700 py-2 px-4 rounded-lg hover:bg-gray-200"
+                className="flex-1 bg-slate-100 text-slate-700 py-2.5 px-4 rounded-xl hover:bg-slate-200 font-semibold shadow-sm transition-all"
                 disabled={enviando}
               >
                 Cancelar
               </button>
               <button
                 type="submit"
-                className="flex-1 bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 disabled:bg-blue-300 disabled:cursor-not-allowed"
+                className="flex-1 bg-slate-900 text-white py-2.5 px-4 rounded-xl hover:bg-slate-800 font-semibold shadow-sm disabled:bg-slate-300 disabled:cursor-not-allowed transition-all"
                 disabled={enviando}
               >
                 {enviando ? 'Actualizando...' : 'Cambiar Estado'}
@@ -963,34 +973,34 @@ const SistemaSoporteDEDTE = ({
     };
 
     return (
-      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-        <div className="bg-white rounded-lg max-w-md w-full">
-          <div className="border-b px-6 py-4 flex justify-between items-center">
-            <h2 className="text-xl font-bold text-gray-800">Asignar Solicitud</h2>
-            <button onClick={onClose} className="text-gray-400 hover:text-gray-600">
-              <X size={24} />
+      <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+        <div className="bg-white rounded-2xl border border-slate-200 max-w-md w-full shadow-xl">
+          <div className="border-b border-slate-200 px-6 py-4 flex justify-between items-center">
+            <h2 className="text-xl font-bold text-slate-900">Asignar Solicitud</h2>
+            <button onClick={onClose} className="text-slate-400 hover:text-slate-600 transition-colors">
+              <X size={24} strokeWidth={2} />
             </button>
           </div>
 
           <form onSubmit={handleSubmit} className="p-6 space-y-4">
-            <div>
-              <p className="text-sm text-gray-600 mb-2">
-                Ticket: <span className="font-semibold">{solicitud.numero_ticket}</span>
+            <div className="bg-slate-50 rounded-xl border border-slate-200 p-4 space-y-2">
+              <p className="text-sm text-slate-600">
+                Ticket: <span className="font-semibold text-slate-900">{solicitud.numero_ticket}</span>
               </p>
-              <p className="text-sm text-gray-600 mb-2">
-                Estudiante: <span className="font-semibold">{solicitud.nombre_estudiante}</span>
+              <p className="text-sm text-slate-600">
+                Estudiante: <span className="font-semibold text-slate-900">{solicitud.nombre_estudiante}</span>
               </p>
-              <p className="text-sm text-gray-600">
-                Asignado actual: <span className="font-semibold">{solicitud.asignado_a || 'No asignado'}</span>
+              <p className="text-sm text-slate-600">
+                Asignado actual: <span className="font-semibold text-slate-900">{solicitud.asignado_a || 'No asignado'}</span>
               </p>
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Asignar a *</label>
+              <label className="block text-sm font-semibold text-slate-900 mb-1.5">Asignar a *</label>
               <select
                 value={asignadoA}
                 onChange={(e) => setAsignadoA(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-slate-200 rounded-xl focus:ring-2 focus:ring-slate-900 focus:border-slate-900 text-slate-900 transition-all bg-white"
                 required
               >
                 <option value="">Seleccionar agente...</option>
@@ -1000,24 +1010,24 @@ const SistemaSoporteDEDTE = ({
               </select>
             </div>
 
-            <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
-              <p className="text-xs text-blue-800">
-                <strong>Nota:</strong> El agente seleccionado será notificado de esta asignación.
+            <div className="bg-blue-50 border border-blue-200 rounded-xl p-3">
+              <p className="text-xs text-blue-800 font-medium">
+                <strong className="font-semibold">Nota:</strong> El agente seleccionado será notificado de esta asignación.
               </p>
             </div>
 
-            <div className="flex gap-3 pt-4">
+            <div className="flex gap-3 pt-4 border-t border-slate-200">
               <button
                 type="button"
                 onClick={onClose}
-                className="flex-1 bg-gray-100 text-gray-700 py-2 px-4 rounded-lg hover:bg-gray-200"
+                className="flex-1 bg-slate-100 text-slate-700 py-2.5 px-4 rounded-xl hover:bg-slate-200 font-semibold shadow-sm transition-all"
                 disabled={enviando}
               >
                 Cancelar
               </button>
               <button
                 type="submit"
-                className="flex-1 bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 disabled:bg-blue-300 disabled:cursor-not-allowed"
+                className="flex-1 bg-slate-900 text-white py-2.5 px-4 rounded-xl hover:bg-slate-800 font-semibold shadow-sm disabled:bg-slate-300 disabled:cursor-not-allowed transition-all"
                 disabled={enviando}
               >
                 {enviando ? 'Asignando...' : 'Asignar'}
@@ -1061,77 +1071,77 @@ const SistemaSoporteDEDTE = ({
     };
 
     return (
-      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-        <div className="bg-white rounded-lg max-w-md w-full">
-          <div className="border-b px-6 py-4 flex justify-between items-center">
-            <h2 className="text-xl font-bold text-gray-800">
+      <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+        <div className="bg-white rounded-2xl border border-slate-200 max-w-md w-full shadow-xl">
+          <div className="border-b border-slate-200 px-6 py-4 flex justify-between items-center">
+            <h2 className="text-xl font-bold text-slate-900">
               {categoriaEditar ? 'Editar Categoría' : 'Nueva Categoría'}
             </h2>
-            <button onClick={() => setModalCategoria(false)} className="text-gray-400 hover:text-gray-600">
-              <X size={24} />
+            <button onClick={() => setModalCategoria(false)} className="text-slate-400 hover:text-slate-600 transition-colors">
+              <X size={24} strokeWidth={2} />
             </button>
           </div>
 
           <form onSubmit={handleSubmit} className="p-6 space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Nombre *</label>
+              <label className="block text-sm font-semibold text-slate-900 mb-1.5">Nombre *</label>
               <input
                 type="text"
                 value={formData.nombre}
                 onChange={(e) => setFormData({...formData, nombre: e.target.value})}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-slate-200 rounded-xl focus:ring-2 focus:ring-slate-900 focus:border-slate-900 text-slate-900 transition-all"
                 placeholder="Ej: Problemas Técnicos"
                 required
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Color</label>
+              <label className="block text-sm font-semibold text-slate-900 mb-1.5">Color</label>
               <div className="flex gap-3 items-center">
                 <input
                   type="color"
                   value={formData.color}
                   onChange={(e) => setFormData({...formData, color: e.target.value})}
-                  className="w-16 h-10 rounded border border-gray-300"
+                  className="w-16 h-10 rounded-lg border border-slate-200 cursor-pointer"
                 />
                 <input
                   type="text"
                   value={formData.color}
                   onChange={(e) => setFormData({...formData, color: e.target.value})}
-                  className="flex-1 px-3 py-2 border border-gray-300 rounded-lg"
+                  className="flex-1 px-3 py-2 border border-slate-200 rounded-xl focus:ring-2 focus:ring-slate-900 focus:border-slate-900 text-slate-900 transition-all"
                   placeholder="#3B82F6"
                 />
               </div>
             </div>
 
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 bg-slate-50 rounded-xl border border-slate-200 p-3">
               <input
                 type="checkbox"
                 id="activo"
                 checked={formData.activo}
                 onChange={(e) => setFormData({...formData, activo: e.target.checked})}
-                className="w-4 h-4 text-blue-600 rounded focus:ring-2 focus:ring-blue-500"
+                className="w-4 h-4 text-slate-900 rounded focus:ring-2 focus:ring-slate-900 cursor-pointer"
               />
-              <label htmlFor="activo" className="text-sm font-medium text-gray-700">
+              <label htmlFor="activo" className="text-sm font-semibold text-slate-900 cursor-pointer">
                 Categoría activa
               </label>
             </div>
 
-            <div className="flex gap-3 pt-4">
+            <div className="flex gap-3 pt-4 border-t border-slate-200">
               <button
                 type="button"
                 onClick={() => {
                   setModalCategoria(false);
                   setCategoriaEditar(null);
                 }}
-                className="flex-1 bg-gray-100 text-gray-700 py-2 px-4 rounded-lg hover:bg-gray-200"
+                className="flex-1 bg-slate-100 text-slate-700 py-2.5 px-4 rounded-xl hover:bg-slate-200 font-semibold shadow-sm transition-all"
                 disabled={enviando}
               >
                 Cancelar
               </button>
               <button
                 type="submit"
-                className="flex-1 bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 disabled:bg-blue-300 disabled:cursor-not-allowed"
+                className="flex-1 bg-slate-900 text-white py-2.5 px-4 rounded-xl hover:bg-slate-800 font-semibold shadow-sm disabled:bg-slate-300 disabled:cursor-not-allowed transition-all"
                 disabled={enviando}
               >
                 {enviando ? 'Guardando...' : (categoriaEditar ? 'Actualizar' : 'Crear')}
@@ -1144,39 +1154,47 @@ const SistemaSoporteDEDTE = ({
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen vanguardist-bg relative">
+      {/* Background Grid Pattern */}
+      <div className="fixed inset-0 vanguardist-grid pointer-events-none"></div>
+
       {/* Mensaje de error */}
       {errorMessage && (
-        <div className="fixed top-4 right-4 bg-red-50 border-2 border-red-200 text-red-800 px-4 py-3 rounded-lg shadow-lg z-50 max-w-md">
+        <div className="fixed top-6 right-6 bg-red-50 border border-red-100 text-red-900 px-4 py-3.5 rounded-xl shadow-lg z-50 max-w-md backdrop-blur-sm animate-fadeIn">
           <div className="flex justify-between items-start">
             <p className="text-sm font-medium">{errorMessage}</p>
-            <button onClick={() => setErrorMessage(null)} className="text-red-600 hover:text-red-800 ml-2">
-              <X size={18} />
+            <button onClick={() => setErrorMessage(null)} className="text-red-600 hover:text-red-800 ml-3 -mt-0.5">
+              <X size={16} strokeWidth={2} />
             </button>
           </div>
         </div>
       )}
 
       {/* Header */}
-      <header className="bg-white shadow-sm border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+      <header className="bg-white/80 backdrop-blur-lg border-b border-slate-200/60 sticky top-0 z-40 shadow-sm">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8 py-5">
           <div className="flex justify-between items-center">
-            <div>
-              <h1 className="text-2xl font-bold text-gray-900">Sistema de Soporte DEDTE</h1>
-              <p className="text-sm text-gray-600 mt-1">Gestión de solicitudes estudiantiles</p>
+            <div className="flex items-center gap-4">
+              <div className="w-10 h-10 bg-slate-900 rounded-xl flex items-center justify-center shadow-sm">
+                <BookOpen size={20} className="text-white" strokeWidth={2} />
+              </div>
+              <div>
+                <h1 className="text-2xl font-bold text-slate-900 tracking-tight">Sistema de Soporte DEDTE</h1>
+                <p className="text-sm text-slate-600 mt-0.5 font-medium">Gestión de solicitudes estudiantiles</p>
+              </div>
             </div>
             <div className="flex items-center gap-3">
-              <div className="flex items-center gap-2 bg-gray-100 px-3 py-2 rounded-lg">
-                <User size={16} className="text-gray-600" />
-                <span className="text-sm text-gray-700 font-medium">{user?.email || 'Usuario'}</span>
+              <div className="flex items-center gap-2 bg-white px-4 py-2.5 rounded-xl border border-slate-200 shadow-sm">
+                <User size={15} className="text-slate-600" strokeWidth={2} />
+                <span className="text-sm text-slate-900 font-semibold">{user?.email || 'Usuario'}</span>
               </div>
               <button
                 onClick={handleLogout}
-                className="flex items-center gap-2 bg-red-50 text-red-600 px-3 py-2 rounded-lg hover:bg-red-100 transition-colors"
+                className="flex items-center gap-2 bg-slate-900 text-white px-4 py-2.5 rounded-xl hover:bg-slate-800 transition-all shadow-sm hover:shadow-md"
                 title="Cerrar sesión"
               >
-                <LogOut size={16} />
-                <span className="text-sm font-medium">Salir</span>
+                <LogOut size={15} strokeWidth={2} />
+                <span className="text-sm font-semibold">Salir</span>
               </button>
             </div>
           </div>
@@ -1184,48 +1202,59 @@ const SistemaSoporteDEDTE = ({
       </header>
 
       {/* Navegación */}
-      <nav className="bg-white border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex gap-6">
+      <nav className="bg-white/60 backdrop-blur-md border-b border-slate-200/60 sticky top-[89px] z-30">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+          <div className="flex gap-1">
             <button
               onClick={() => setVista('solicitudes')}
-              className={`py-4 px-2 border-b-2 font-medium text-sm transition-colors ${
+              className={`relative py-4 px-4 font-semibold text-sm transition-all ${
                 vista === 'solicitudes'
-                  ? 'border-blue-600 text-blue-600'
-                  : 'border-transparent text-gray-600 hover:text-gray-800'
+                  ? 'text-slate-900'
+                  : 'text-slate-500 hover:text-slate-700'
               }`}
             >
               Solicitudes
+              {vista === 'solicitudes' && (
+                <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-slate-900 rounded-t-full"></span>
+              )}
             </button>
             <button
               onClick={() => setVista('dashboard')}
-              className={`py-4 px-2 border-b-2 font-medium text-sm transition-colors ${
+              className={`relative py-4 px-4 font-semibold text-sm transition-all ${
                 vista === 'dashboard'
-                  ? 'border-blue-600 text-blue-600'
-                  : 'border-transparent text-gray-600 hover:text-gray-800'
+                  ? 'text-slate-900'
+                  : 'text-slate-500 hover:text-slate-700'
               }`}
             >
               Analíticas
+              {vista === 'dashboard' && (
+                <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-slate-900 rounded-t-full"></span>
+              )}
             </button>
             <button
               onClick={() => setVista('categorias')}
-              className={`py-4 px-2 border-b-2 font-medium text-sm transition-colors ${
+              className={`relative py-4 px-4 font-semibold text-sm transition-all ${
                 vista === 'categorias'
-                  ? 'border-blue-600 text-blue-600'
-                  : 'border-transparent text-gray-600 hover:text-gray-800'
+                  ? 'text-slate-900'
+                  : 'text-slate-500 hover:text-slate-700'
               }`}
             >
               Categorías
+              {vista === 'categorias' && (
+                <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-slate-900 rounded-t-full"></span>
+              )}
             </button>
           </div>
         </div>
       </nav>
 
       {/* Contenido Principal */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {vista === 'solicitudes' && <TablaSolicitudes />}
-        {vista === 'dashboard' && <Dashboard />}
-        {vista === 'categorias' && <GestionCategorias />}
+      <main className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8 py-10">
+        <div className="animate-fadeIn">
+          {vista === 'solicitudes' && <TablaSolicitudes />}
+          {vista === 'dashboard' && <Dashboard />}
+          {vista === 'categorias' && <GestionCategorias />}
+        </div>
       </main>
 
       {/* Modales */}
