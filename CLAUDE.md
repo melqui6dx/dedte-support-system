@@ -84,6 +84,27 @@ The main component includes these nested components:
 - Responsive design with mobile-first breakpoints
 - Gradient cards for dashboard metrics
 
+## Authentication
+
+The system uses Supabase Authentication with email/password for credential-based access:
+
+- **Login Flow**: Users must authenticate before accessing the system
+- **Protected Routes**: The entire application is wrapped in authentication checks
+- **Auth Context**: `src/contexts/AuthContext.jsx` provides auth state and methods (`useAuth` hook)
+- **Login Component**: `src/components/Login.jsx` handles the login UI
+- **Session Management**: Supabase handles sessions automatically with token refresh
+- **Logout**: Users can sign out via the header logout button
+
+### Setting Up Users in Supabase
+
+To add authorized personnel:
+1. Go to Supabase Dashboard → Authentication → Users
+2. Click "Add User" or "Invite User"
+3. Enter email and password for the staff member
+4. Users will authenticate with these credentials
+
+The system does not have a public signup form - all users must be created by administrators in the Supabase dashboard.
+
 ## Development Notes
 
 - The codebase currently has mock data in `SistemaSoporteDEDTE.jsx` (mockSolicitudes, mockCategorias) for development purposes

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Plus, Search, Filter, X, Phone, Mail, BookOpen, Calendar, FileText, Download, MessageSquare, Clock, CheckCircle, AlertCircle, Eye, Edit2, Trash2, PlusCircle, BarChart3, FolderTree, ExternalLink } from 'lucide-react';
+import { Plus, Search, Filter, X, Phone, Mail, BookOpen, Calendar, FileText, Download, MessageSquare, Clock, CheckCircle, AlertCircle, Eye, Edit2, Trash2, PlusCircle, BarChart3, FolderTree, ExternalLink, LogOut, User } from 'lucide-react';
+import { useAuth } from '../contexts/AuthContext';
 
 const SistemaSoporteDEDTE = ({
   solicitudes,
@@ -10,6 +11,7 @@ const SistemaSoporteDEDTE = ({
   onEliminarCategoria,
   onActualizarSolicitud
 }) => {
+  const { user, signOut } = useAuth();
   const [vista, setVista] = useState('solicitudes');
   const [modalDetalle, setModalDetalle] = useState(null);
   const [modalNuevo, setModalNuevo] = useState(false);
@@ -19,6 +21,17 @@ const SistemaSoporteDEDTE = ({
   const [errorMessage, setErrorMessage] = useState(null);
   const [modalCambiarEstado, setModalCambiarEstado] = useState(null);
   const [modalAsignar, setModalAsignar] = useState(null);
+
+  const handleLogout = async () => {
+    if (window.confirm('¿Estás seguro que deseas cerrar sesión?')) {
+      try {
+        await signOut();
+      } catch (error) {
+        console.error('Error al cerrar sesión:', error);
+        alert('Error al cerrar sesión. Por favor intenta de nuevo.');
+      }
+    }
+  };
 
   // Componente: Modal de Detalle de Solicitud
   const ModalDetalleSolicitud = ({ solicitud, onClose }) => {
@@ -1152,8 +1165,19 @@ const SistemaSoporteDEDTE = ({
               <h1 className="text-2xl font-bold text-gray-900">Sistema de Soporte DEDTE</h1>
               <p className="text-sm text-gray-600 mt-1">Gestión de solicitudes estudiantiles</p>
             </div>
-            <div className="flex items-center gap-2">
-              <span className="text-sm text-gray-600">Usuario: Admin</span>
+            <div className="flex items-center gap-3">
+              <div className="flex items-center gap-2 bg-gray-100 px-3 py-2 rounded-lg">
+                <User size={16} className="text-gray-600" />
+                <span className="text-sm text-gray-700 font-medium">{user?.email || 'Usuario'}</span>
+              </div>
+              <button
+                onClick={handleLogout}
+                className="flex items-center gap-2 bg-red-50 text-red-600 px-3 py-2 rounded-lg hover:bg-red-100 transition-colors"
+                title="Cerrar sesión"
+              >
+                <LogOut size={16} />
+                <span className="text-sm font-medium">Salir</span>
+              </button>
             </div>
           </div>
         </div>

@@ -1,9 +1,34 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from './lib/supabase';
 import SistemaSoporteDEDTE from './components/SistemaSoporteDEDTE';
+import Login from './components/Login';
+import { AuthProvider, useAuth } from './contexts/AuthContext';
 import * as api from './utils/api';
 
-function App() {
+function AppContent() {
+  const { user, loading: authLoading } = useAuth();
+
+  // Show loading while checking authentication
+  if (authLoading) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
+          <p className="mt-4 text-gray-600">Verificando autenticación...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Show login if not authenticated
+  if (!user) {
+    return <Login />;
+  }
+
+  return <AuthenticatedApp />;
+}
+
+function AuthenticatedApp() {
   const [solicitudes, setSolicitudes] = useState([]);
   const [categorias, setCategorias] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -199,6 +224,14 @@ function App() {
       onEliminarCategoria={handleEliminarCategoria}
       onSubirArchivo={handleSubirArchivo}
     />
+  );
+}
+
+function App() {
+  return (
+    <AuthProvider>
+      <AppContent />
+    </AuthProvider>
   );
 }
 
