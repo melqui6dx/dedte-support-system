@@ -3,6 +3,7 @@ import { supabase } from './lib/supabase';
 import SistemaSoporteDEDTE from './components/SistemaSoporteDEDTE';
 import Login from './components/Login';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
+import { ThemeProvider } from './contexts/ThemeContext';
 import * as api from './utils/api';
 
 function AppContent() {
@@ -229,9 +230,11 @@ function AuthenticatedApp() {
 
 function App() {
   return (
-    <AuthProvider>
-      <AppContent />
-    </AuthProvider>
+    <ThemeProvider>
+      <AuthProvider>
+        <AppContent />
+      </AuthProvider>
+    </ThemeProvider>
   );
 }
 
