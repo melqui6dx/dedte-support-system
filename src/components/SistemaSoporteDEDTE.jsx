@@ -29,8 +29,12 @@ const SistemaSoporteDEDTE = ({
       try {
         await signOut();
       } catch (error) {
-        console.error('Error al cerrar sesión:', error);
-        alert('Error al cerrar sesión. Por favor intenta de nuevo.');
+        // Only show error if it's not a session-related error
+        if (!error.message?.includes('session') && error.name !== 'AuthSessionMissingError') {
+          console.error('Error al cerrar sesión:', error);
+          alert('Error al cerrar sesión. Por favor intenta de nuevo.');
+        }
+        // If it's a session error, the signOut function already handled it
       }
     }
   };

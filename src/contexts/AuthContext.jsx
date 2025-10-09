@@ -51,9 +51,23 @@ export const AuthProvider = ({ children }) => {
   const signOut = async () => {
     try {
       setError(null);
-      const { error } = await supabase.auth.signOut();
-      if (error) throw error;
+
+      // Check if there's an active session before attempting to sign out
+      const { data: { session } } = await supabase.auth.getSession();
+
+      if (session) {
+        const { error } = await supabase.auth.signOut();
+        if (error) throw error;
+      } else {
+        // If no session exists, just clear the user state locally
+        setUser(null);
+      }
     } catch (error) {
+      // If the error is about missing session, clear user state anyway
+      if (error.message?.includes('session') || error.name === 'AuthSessionMissingError') {
+        setUser(null);
+        return;
+      }
       setError(error.message);
       throw error;
     }
